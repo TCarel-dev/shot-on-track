@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  background: #171717;
+}
+
+main {
+  width: 100%;
+}
+
+canvas {
+  display: block;
+}
