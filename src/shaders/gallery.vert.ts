@@ -23,23 +23,6 @@ void main() {
 
     pos.z *= intro;
 
-    pos.z +=
-        sin(
-            pos.x * 2.0 +
-            uTime
-        )
-        *
-        uVelocity
-        *
-        0.15;
-
-    pos +=
-        normal
-        *
-        uHover
-        *
-        0.1;
-
     vec4 worldPosition =
         modelMatrix *
         vec4(pos, 1.0);

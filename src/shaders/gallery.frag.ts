@@ -31,27 +31,10 @@ void main() {
 
     vec2 uv = vUv;
 
-    uv.y +=
-        sin(
-            uv.x * 10.0 +
-            uTime * 3.0
-        )
-        *
-        uHover
-        *
-        0.02;
-
-    vec2 shift =
-        (uv - 0.5)
-        *
-        uHover
-        *
-        0.02;
-
     float r =
         texture2D(
             uMap,
-            uv + shift
+            uv
         ).r;
 
     float g =
@@ -63,7 +46,7 @@ void main() {
     float b =
         texture2D(
             uMap,
-            uv - shift
+            uv
         ).b;
 
     vec3 tex =
