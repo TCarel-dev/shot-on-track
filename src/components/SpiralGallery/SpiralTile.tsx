@@ -14,6 +14,8 @@ import fragmentShader from "@/shaders/gallery.frag";
 
 import { useGallery } from "@/providers/GalleryProvider";
 
+import { GALLERY_CONFIG } from "@/constants/gallery";
+
 interface Props {
   geometry: THREE.BufferGeometry;
   texture: string;
@@ -27,6 +29,7 @@ export default function SpiralTile({ geometry, texture }: Props) {
   const hover = useRef(0);
 
   const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
 
   const { camera } = useThree();
 
@@ -56,13 +59,24 @@ export default function SpiralTile({ geometry, texture }: Props) {
 
   useFrame((state) => {
     const material = materialRef.current;
+    const mesh = meshRef.current;
 
-    if (!material) return;
+    if (!material || !mesh) return;
 
     hover.current = THREE.MathUtils.lerp(
       hover.current,
       hovered.current ? 1 : 0,
       0.08,
+    );
+
+    mesh.scale.setScalar(
+      THREE.MathUtils.lerp(
+        mesh.scale.x,
+        hovered.current
+          ? GALLERY_CONFIG.tileHoveredScale
+          : GALLERY_CONFIG.tileScale,
+        0.08,
+      ),
     );
 
     material.uniforms.uTime.value = state.clock.elapsedTime;
@@ -80,6 +94,7 @@ export default function SpiralTile({ geometry, texture }: Props) {
 
   return (
     <mesh
+      ref={meshRef}
       geometry={geometry}
       onPointerEnter={() => {
         hovered.current = true;
