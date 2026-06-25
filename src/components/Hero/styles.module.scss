@@ -1,0 +1,39 @@
+.hero {
+  position: relative;
+  height: min(250vh, 300vw);
+
+  &Wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    background: var(--BG);
+    color: #fff;
+    z-index: 0;
+  }
+
+  h1 {
+    color: #d2d2d2;
+    text-align: center;
+    font-size: 14.5vw;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 81%;
+    letter-spacing: -0.077em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-left: -1vw;
+    margin-top: -0.6vw;
+    margin-bottom: 1.45vw;
+    display: block;
+    width: 105.3vw;
+    height: 22.6315vw;
+  }
+}

@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "PP Telegraf";
+  src: url(/fonts/PPTelegraf-Regular.otf);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,26 +12,19 @@
 html,
 body {
   overflow-x: hidden;
+}
+
+body {
   background: #171717;
+  font-family: "PP Telegraf", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  pointer-events: auto;
 }
 
 main {
   width: 100%;
-}
-
-canvas {
-  display: block;
-}
-
-.spiral-wrapper {
-  position: relative;
-}
-
-.scroll-container {
-  height: 200vh;
-}
-
-canvas {
-  position: sticky !important;
-  top: 0;
 }

@@ -3,20 +3,16 @@
 import { useEffect, useMemo, useRef } from "react";
 
 import * as THREE from "three";
-
 import { useFrame } from "@react-three/fiber";
-
 import gsap from "gsap";
 
-import SpiralTile from "./SpiralTile";
-
 import { useLenis } from "@/hooks/useLenis";
-
 import { useGallery } from "@/hooks/useGallery";
-
 import { createSpiralGeometry } from "@/lib/createSpiralGeometry";
 
 import { GALLERY_CONFIG } from "@/constants/gallery";
+
+import SpiralTile from "./SpiralTile";
 
 export default function SpiralScene() {
   useLenis();
@@ -87,11 +83,8 @@ export default function SpiralScene() {
           (2 * Math.PI * radius) / GALLERY_CONFIG.tilesPerRevolution;
 
         const tileHeight = arcWidth * GALLERY_CONFIG.tileHeightRatio;
-
         const tileAngle = arcWidth / radius + GALLERY_CONFIG.tileOverlap;
-
         const centerY = (tileEdgesY[i] + tileEdgesY[i + 1]) / 2;
-
         const slope = tileEdgesY[i + 1] - tileEdgesY[i];
 
         return {
@@ -102,11 +95,8 @@ export default function SpiralScene() {
             slope,
             segments: GALLERY_CONFIG.tileSegments,
           }),
-
           centerY,
-
           rotationY: i * angleStep,
-
           texture: `/images/${(i % GALLERY_CONFIG.totalImages) + 1}.jpg`,
         };
       },

@@ -1,9 +1,9 @@
-import SpiralGallery from "@/components/SpiralGallery/SpiralGallery";
+import Hero from "@/components/Hero/Hero";
 
 export default function Home() {
   return (
     <>
-      <SpiralGallery />
+      <Hero />
     </>
   );
 }
