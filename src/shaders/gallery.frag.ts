@@ -1,6 +1,8 @@
 const fragmentShader = `
 uniform sampler2D uMap;
+
 uniform float uHover;
+uniform float uOpacity;
 
 varying vec2 vUv;
 
@@ -11,7 +13,7 @@ void main() {
     uv =
       mix(
         uv,
-        vec2(0.5) + (uv - vec2(0.5)) * 0.95,
+        vec2(0.5) + (uv - vec2(0.5)) * 0.98,
         uHover
       );
 
@@ -22,7 +24,10 @@ void main() {
       );
 
     gl_FragColor =
-      tex;
+      vec4(
+        tex.rgb,
+        tex.a * uOpacity
+      );
 }
 `;
 

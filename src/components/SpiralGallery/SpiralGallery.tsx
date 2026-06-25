@@ -13,23 +13,10 @@ import styles from "./styles.module.scss";
 export default function SpiralGallery() {
   useLenis();
 
-  const [loaded, setLoaded] = useState(false);
-
   const { x, y, z } = GALLERY_CONFIG.cameraPos;
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div
-      className={clsx(
-        styles.spiralGallery,
-        loaded ? styles.spiralLoaded : styles.spiralLoading,
-      )}
-    >
+    <div className={styles.spiralGallery}>
       <Canvas
         dpr={[1, 2]}
         gl={{

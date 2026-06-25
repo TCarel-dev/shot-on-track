@@ -10,7 +10,7 @@ export const GALLERY_CONFIG = {
   tileSegments: 32,
   spiralGap: 0.3,
   tileOverlap: 0.005,
-  cameraPos: { x: 0, y: 3, z: 12 },
+  cameraPos: { x: 0, y: 4, z: 12 },
   cameraFov: 90,
   baseRotationSpeed: 0.0001,
 };
