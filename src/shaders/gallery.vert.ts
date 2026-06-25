@@ -1,14 +1,15 @@
 const vertexShader = `
 varying vec2 vUv;
+varying vec3 vNormal;
+varying vec3 vViewDir;
 
 void main() {
-
     vUv = uv;
 
-    gl_Position =
-        projectionMatrix *
-        modelViewMatrix *
-        vec4(position, 1.0);
+    vNormal = normalize(normalMatrix * normal);
+    vec3 worldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
+    vViewDir = cameraPosition - worldPosition;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
 `;
 

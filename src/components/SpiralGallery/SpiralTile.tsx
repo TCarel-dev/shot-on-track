@@ -1,11 +1,7 @@
-"use client";
-
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
-
 import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
-
 import gsap from "gsap";
 
 import vertexShader from "@/shaders/gallery.vert";
@@ -14,9 +10,9 @@ import fragmentShader from "@/shaders/gallery.frag";
 interface Props {
   geometry: THREE.BufferGeometry;
   texture: string;
-
   index: number;
   positionY: number;
+  aspect?: number;
 }
 
 export default function SpiralTile({
@@ -24,30 +20,25 @@ export default function SpiralTile({
   texture,
   index,
   positionY,
+  aspect = 1,
 }: Props) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const hovered = useRef(false);
-  const hoverProgress = useRef(0);
+
   const map = useTexture(texture);
 
-  const delay = index * 0.09;
+  const delay = index * 0.07;
 
   const uniforms = useMemo(
     () => ({
-      uMap: {
-        value: map,
-      },
-
-      uHover: {
-        value: 0,
-      },
-
-      uOpacity: {
-        value: 0,
-      },
+      uMap: { value: map },
+      uHover: { value: 0 },
+      uOpacity: { value: 0 },
+      uImageAspect: { value: aspect },
+      uPlaneAspect: { value: 1.45 / 2.1 },
     }),
-    [map],
+    [map, aspect],
   );
 
   useEffect(() => {
@@ -70,8 +61,8 @@ export default function SpiralTile({
       y: positionY,
       z: 0,
       duration: 1.2,
-      ease: "power4.out",
       delay: delay,
+      ease: "power4.out",
     });
 
     gsap.to(materialRef.current.uniforms.uOpacity, {
@@ -82,15 +73,15 @@ export default function SpiralTile({
   }, [index, positionY]);
 
   useFrame(() => {
-    if (!meshRef.current || !materialRef.current) return;
+    if (!materialRef.current || !meshRef.current) return;
 
-    hoverProgress.current = THREE.MathUtils.lerp(
-      hoverProgress.current,
-      hovered.current ? 1 : 0,
-      0.08,
+    const targetHover = hovered.current ? 1 : 0;
+
+    materialRef.current.uniforms.uHover.value = THREE.MathUtils.lerp(
+      materialRef.current.uniforms.uHover.value,
+      targetHover,
+      0.1,
     );
-
-    materialRef.current.uniforms.uHover.value = hoverProgress.current;
 
     const targetScale = hovered.current ? 1.05 : 1;
 
@@ -107,20 +98,14 @@ export default function SpiralTile({
     <mesh
       ref={meshRef}
       geometry={geometry}
-      onPointerOver={(e) => {
-        e.stopPropagation();
-        hovered.current = true;
-      }}
-      onPointerOut={(e) => {
-        e.stopPropagation();
-        hovered.current = false;
-      }}
+      onPointerOver={() => (hovered.current = true)}
+      onPointerOut={() => (hovered.current = false)}
     >
       <shaderMaterial
         ref={materialRef}
-        uniforms={uniforms}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
+        uniforms={uniforms}
         transparent
         side={THREE.DoubleSide}
       />
