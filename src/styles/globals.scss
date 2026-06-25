@@ -17,3 +17,16 @@ main {
 canvas {
   display: block;
 }
+
+.spiral-wrapper {
+  position: relative;
+}
+
+.scroll-container {
+  height: 200vh;
+}
+
+canvas {
+  position: sticky !important;
+  top: 0;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import * as THREE from "three";
 
@@ -10,28 +10,40 @@ import gsap from "gsap";
 
 import SpiralTile from "./SpiralTile";
 
-import { GALLERY_CONFIG } from "@/constants/gallery";
+import { useLenis } from "@/hooks/useLenis";
+
+import { useGallery } from "@/hooks/useGallery";
 
 import { createSpiralGeometry } from "@/lib/createSpiralGeometry";
 
-import { useGallery } from "@/providers/GalleryProvider";
-
-import { useLenis } from "@/hooks/useLenis";
+import { GALLERY_CONFIG } from "@/constants/gallery";
 
 export default function SpiralScene() {
   useLenis();
 
-  const { intro, velocity, scrollProgress } = useGallery();
+  const { velocity } = useGallery();
 
   const spiralRef = useRef<THREE.Group>(null);
 
+  const scrollForce = useRef(0);
+
   useEffect(() => {
-    gsap.to(intro, {
-      current: 1,
-      duration: 2.5,
+    if (!spiralRef.current) return;
+
+    gsap.from(spiralRef.current.position, {
+      y: 2,
+      duration: 2,
       ease: "power4.out",
     });
-  }, [intro]);
+
+    gsap.from(spiralRef.current.scale, {
+      x: 0.95,
+      y: 0.95,
+      z: 0.95,
+      duration: 2,
+      ease: "power4.out",
+    });
+  }, []);
 
   const tiles = useMemo(() => {
     const totalTiles =
@@ -104,26 +116,30 @@ export default function SpiralScene() {
   useFrame((state) => {
     if (!spiralRef.current) return;
 
-    spiralRef.current.rotation.y +=
-      GALLERY_CONFIG.baseRotationSpeed + velocity.current * 0.0005;
-
-    spiralRef.current.rotation.x = THREE.MathUtils.lerp(
-      spiralRef.current.rotation.x,
-      state.pointer.y * 0.15,
-      0.05,
+    scrollForce.current = THREE.MathUtils.lerp(
+      scrollForce.current,
+      velocity.current * 0.0015,
+      0.08,
     );
 
-    spiralRef.current.rotation.z = THREE.MathUtils.lerp(
-      spiralRef.current.rotation.z,
-      -state.pointer.x * 0.05,
-      0.05,
+    spiralRef.current.rotation.y +=
+      GALLERY_CONFIG.baseRotationSpeed + scrollForce.current;
+
+    scrollForce.current *= 0.95;
+
+    state.camera.position.x = THREE.MathUtils.lerp(
+      state.camera.position.x,
+      state.pointer.x * 3,
+      0.03,
     );
 
     state.camera.position.y = THREE.MathUtils.lerp(
       state.camera.position.y,
-      -scrollProgress.current * 4,
-      0.05,
+      state.pointer.y * 3,
+      0.03,
     );
+
+    state.camera.lookAt(0, 0, 0);
   });
 
   return (

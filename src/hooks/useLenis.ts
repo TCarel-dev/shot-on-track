@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
-import { useGallery } from "@/providers/GalleryProvider";
+import { useGallery } from "@/hooks/useGallery";
 
 export function useLenis() {
   const { velocity, scrollProgress } = useGallery();

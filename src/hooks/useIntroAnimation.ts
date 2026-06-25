@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 
-import { useGallery } from "@/providers/GalleryProvider";
+import { useGallery } from "@/hooks/useGallery";
 
 export function useIntroAnimation() {
   const { intro } = useGallery();

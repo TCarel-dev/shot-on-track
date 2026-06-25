@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useGallery } from "@/providers/GalleryProvider";
+import { useGallery } from "@/hooks/useGallery";
 
 export function useScrollVelocity() {
   const { velocity } = useGallery();

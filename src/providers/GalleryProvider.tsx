@@ -1,19 +1,15 @@
 "use client";
 
-import { createContext, useContext, useRef, ReactNode } from "react";
+import { useRef, useState, ReactNode } from "react";
 
-interface GalleryContextValue {
-  intro: React.MutableRefObject<number>;
-  velocity: React.MutableRefObject<number>;
-  scrollProgress: React.MutableRefObject<number>;
-}
-
-const GalleryContext = createContext<GalleryContextValue | null>(null);
+import { GalleryContext } from "./GalleryContext";
 
 export function GalleryProvider({ children }: { children: ReactNode }) {
   const intro = useRef(0);
   const velocity = useRef(0);
   const scrollProgress = useRef(0);
+
+  const [activeImage, setActiveImage] = useState<string | null>(null);
 
   return (
     <GalleryContext.Provider
@@ -21,19 +17,11 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
         intro,
         velocity,
         scrollProgress,
+        activeImage,
+        setActiveImage,
       }}
     >
       {children}
     </GalleryContext.Provider>
   );
-}
-
-export function useGallery() {
-  const context = useContext(GalleryContext);
-
-  if (!context) {
-    throw new Error("useGallery must be used inside GalleryProvider");
-  }
-
-  return context;
 }
