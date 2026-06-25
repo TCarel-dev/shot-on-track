@@ -5,7 +5,6 @@ import { useRef, useState, ReactNode } from "react";
 import { GalleryContext } from "./GalleryContext";
 
 export function GalleryProvider({ children }: { children: ReactNode }) {
-  const intro = useRef(0);
   const velocity = useRef(0);
   const scrollProgress = useRef(0);
 
@@ -14,7 +13,6 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
   return (
     <GalleryContext.Provider
       value={{
-        intro,
         velocity,
         scrollProgress,
         activeImage,

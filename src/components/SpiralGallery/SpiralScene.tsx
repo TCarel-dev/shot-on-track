@@ -26,17 +26,20 @@ export default function SpiralScene() {
   useEffect(() => {
     if (!spiralRef.current) return;
 
-    gsap.from(spiralRef.current.position, {
-      y: 2,
-      duration: 2,
+    spiralRef.current.scale.set(0.8, 0.8, 0.8);
+    spiralRef.current.position.y = -5;
+
+    gsap.to(spiralRef.current.scale, {
+      x: 1,
+      y: 1,
+      z: 1,
+      duration: 1.8,
       ease: "power4.out",
     });
 
-    gsap.from(spiralRef.current.scale, {
-      x: 0.95,
-      y: 0.95,
-      z: 0.95,
-      duration: 2,
+    gsap.to(spiralRef.current.position, {
+      y: GALLERY_CONFIG.cameraPos.y,
+      duration: 1.8,
       ease: "power4.out",
     });
   }, []);
@@ -137,7 +140,12 @@ export default function SpiralScene() {
       {tiles.map((tile, index) => (
         <group key={index} rotation-y={tile.rotationY}>
           <group position-y={tile.centerY}>
-            <SpiralTile geometry={tile.geometry} texture={tile.texture} />
+            <SpiralTile
+              geometry={tile.geometry}
+              texture={tile.texture}
+              index={index}
+              positionY={tile.centerY}
+            />
           </group>
         </group>
       ))}
