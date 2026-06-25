@@ -10,6 +10,7 @@ import vertexShader from "@/shaders/gallery.vert";
 import fragmentShader from "@/shaders/gallery.frag";
 
 import { useGallery } from "@/hooks/useGallery";
+import { GALLERY_CONFIG } from "@/constants/gallery";
 
 interface Props {
   geometry: THREE.BufferGeometry;
@@ -55,7 +56,9 @@ export default function SpiralTile({ geometry, texture }: Props) {
 
     const scale = THREE.MathUtils.lerp(
       meshRef.current.scale.x,
-      hovered.current ? 1.05 : 1,
+      hovered.current
+        ? GALLERY_CONFIG.tileHoveredScale
+        : GALLERY_CONFIG.tileScale,
       0.08,
     );
 

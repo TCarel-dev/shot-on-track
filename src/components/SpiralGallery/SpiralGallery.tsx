@@ -2,11 +2,9 @@
 
 import { Canvas } from "@react-three/fiber";
 import { useLenis } from "@/hooks/useLenis";
+import { GALLERY_CONFIG } from "@/constants/gallery";
 
-import DynamicBackground from "./DynamicBackground";
 import SpiralScene from "./SpiralScene";
-
-import styles from "./styles.module.scss";
 
 export default function SpiralGallery() {
   useLenis();
@@ -21,8 +19,8 @@ export default function SpiralGallery() {
             powerPreference: "high-performance",
           }}
           camera={{
-            position: [0, 0, 12],
-            fov: 75,
+            position: [0, 0, GALLERY_CONFIG.cameraZ],
+            fov: GALLERY_CONFIG.cameraFov,
           }}
         >
           <SpiralScene />
