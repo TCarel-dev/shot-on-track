@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 
 export default function HeroGrid() {
   const ROWS = 3;
-  const COLS = 6;
+  const COLS = 8;
 
   const cells = Array.from({ length: ROWS * COLS });
 

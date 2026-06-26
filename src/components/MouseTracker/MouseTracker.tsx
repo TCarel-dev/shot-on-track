@@ -22,10 +22,10 @@ export default function MouseTracker() {
   return (
     <div className={styles.mouseTracker}>
       <div>
-        <span>x</span>:<span>{pos.x}</span>
+        <span>x</span>:<span>[{pos.x}]</span>
       </div>
       <div>
-        <span>y</span>:<span>{pos.y}</span>
+        <span>y</span>:<span>[{pos.y}]</span>
       </div>
     </div>
   );
