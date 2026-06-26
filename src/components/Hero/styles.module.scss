@@ -1,6 +1,82 @@
+$cross-think: 1px;
+$cross-size: 25px;
+$line-color: #4f4f4f;
+$cross-color: #8d8d8d;
+
 .hero {
   position: relative;
   height: min(250vh, 300vw);
+
+  &Grid {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+    z-index: 0;
+    gap: 0;
+  }
+
+  &GridCell {
+    position: relative;
+    border-right: 1px solid $line-color;
+    border-bottom: 1px solid $line-color;
+
+    &:nth-child(-n + 6) {
+      border-top: none;
+    }
+
+    &:nth-child(6n + 1) {
+      border-left: none;
+    }
+
+    &:nth-child(6n) {
+      border-right: none;
+
+      .heroGridCross {
+        display: none;
+      }
+    }
+
+    &:nth-last-child(-n + 6) {
+      border-bottom: none;
+
+      .heroGridCross {
+        display: none;
+      }
+    }
+  }
+
+  &GridCross {
+    position: absolute;
+    width: $cross-size;
+    height: $cross-size;
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 50%);
+    z-index: 1;
+
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      background-color: $cross-color;
+    }
+
+    &:before {
+      width: $cross-think;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &:after {
+      width: 100%;
+      height: $cross-think;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 
   &Wrapper {
     position: fixed;
@@ -14,7 +90,6 @@
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-    background: var(--BG);
     color: #fff;
     z-index: 0;
   }
