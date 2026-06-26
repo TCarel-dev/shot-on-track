@@ -106,18 +106,16 @@ export default function SpiralScene() {
     scrollForce.current *= 0.95;
 
     // smooth camera
-    state.camera.position.x = THREE.MathUtils.damp(
+    state.camera.position.x = THREE.MathUtils.lerp(
       state.camera.position.x,
       state.pointer.x * 3,
       0.03,
-      delta,
     );
 
-    state.camera.position.y = THREE.MathUtils.damp(
+    state.camera.position.y = THREE.MathUtils.lerp(
       state.camera.position.y,
       state.pointer.y * 3,
       0.03,
-      delta,
     );
 
     state.camera.lookAt(0, 0, 0);
