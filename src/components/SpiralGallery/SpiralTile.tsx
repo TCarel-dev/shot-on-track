@@ -35,8 +35,6 @@ export default function SpiralTile({
       uMap: { value: map },
       uHover: { value: 0 },
       uOpacity: { value: 0 },
-      uImageAspect: { value: aspect },
-      uPlaneAspect: { value: 1.45 / 2.1 },
     }),
     [map, aspect],
   );

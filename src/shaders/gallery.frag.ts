@@ -4,9 +4,6 @@ uniform sampler2D uMap;
 uniform float uHover;
 uniform float uOpacity;
 
-uniform float uImageAspect;
-uniform float uPlaneAspect;
-
 varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vViewDir;
@@ -15,19 +12,7 @@ void main() {
     // ---------------------------------------
     // 1. IMAGE RATIO
     // ---------------------------------------
-    vec2 uv = vUv - 0.5;
-    float imageAspect = uImageAspect;
-    float planeAspect = uPlaneAspect;
-    vec2 scale = vec2(1.0);
-
-    if (imageAspect > planeAspect) {
-        scale.x = imageAspect / planeAspect;
-    } else {
-        scale.y = planeAspect / imageAspect;
-    }
-
-    uv *= scale;
-    uv += 0.5;
+    vec2 uv = vUv;
     vec4 tex = texture2D(uMap, uv);
 
     // ---------------------------------------
