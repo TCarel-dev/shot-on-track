@@ -2,10 +2,12 @@
 
 import styles from "./styles.module.scss";
 
-export default function HeroGrid() {
-  const ROWS = 3;
-  const COLS = 8;
+const ROWS = 3;
+const COLS = 10;
 
+const words = ["MANON", "VALOGNES", ""];
+
+export default function HeroGrid() {
   const cells = Array.from({ length: ROWS * COLS });
 
   return (
@@ -17,8 +19,13 @@ export default function HeroGrid() {
         const isLastRow = row === ROWS - 1;
         const isLastCol = col === COLS - 1;
 
+        const letter = words[row]?.[col];
+
         return (
           <div key={index} className={styles.heroGridCell}>
+            <div key={index} className={styles.heroGridCellLetter}>
+              {letter && <span>{letter}</span>}
+            </div>
             {!isLastCol && !isLastRow && (
               <span className={styles.heroGridCross} />
             )}

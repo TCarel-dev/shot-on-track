@@ -11,11 +11,7 @@ export default function Hero() {
     <section className={styles.hero}>
       <HeroGrid />
       <div className={styles.heroWrapper}>
-        <h1>
-          <div>MANON</div>
-          <div>VALOGNES</div>
-          <MouseTracker />
-        </h1>
+        <MouseTracker />
       </div>
       <SpiralGallery />
     </section>
