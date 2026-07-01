@@ -1,3 +1,6 @@
+@use "variables";
+@use "palettes";
+
 @font-face {
   font-family: "PP Telegraf";
   src: url(/fonts/PPTelegraf-Regular.otf);
@@ -15,8 +18,8 @@ body {
 }
 
 body {
-  color: #ffe0bd;
-  background: #171717;
+  color: var(--color-primary);
+  background: var(--color-background);
   font-family: "PP Telegraf", sans-serif;
 }
 

@@ -1,0 +1,14 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+
+  &Wrapper {
+    display: grid;
+    grid-template-rows: repeat(1, var(--header-height));
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+    border-bottom: 1px solid var(--color-line);
+  }
+}

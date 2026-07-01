@@ -1,11 +1,10 @@
 .mouseTracker {
-  font-size: 0.625vw;
-  font-weight: 600;
-  letter-spacing: 0.0125vw;
-  text-transform: uppercase;
   display: flex;
   align-items: center;
   gap: 2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
   white-space: pre;
 
   div {

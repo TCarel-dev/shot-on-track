@@ -16,17 +16,25 @@ export default function HeroGrid() {
         const row = Math.floor(index / COLS);
         const col = index % COLS;
 
-        const isLastRow = row === ROWS - 1;
-        const isLastCol = col === COLS - 1;
-
         const letter = words[row]?.[col];
 
+        const classNames = [
+          styles.heroGridCell,
+          row === 0 && styles.firstRow,
+          row === ROWS - 1 && styles.lastRow,
+          col === 0 && styles.firstCol,
+          col === COLS - 1 && styles.lastCol,
+        ]
+          .filter(Boolean)
+          .join(" ");
+
         return (
-          <div key={index} className={styles.heroGridCell}>
-            <div key={index} className={styles.heroGridCellLetter}>
+          <div key={index} className={classNames}>
+            <div className={styles.heroGridCellLetter}>
               {letter && <span>{letter}</span>}
             </div>
-            {!isLastCol && !isLastRow && (
+
+            {!(row === ROWS - 1 || col === COLS - 1) && (
               <span className={styles.heroGridCross} />
             )}
           </div>
