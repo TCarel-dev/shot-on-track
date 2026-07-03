@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef } from "react";
 
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import gsap from "gsap";
 
 import { useLenis } from "@/hooks/useLenis";
 import { useGallery } from "@/hooks/useGallery";
@@ -13,7 +12,6 @@ import { createFilmStripGeometry } from "@/lib/createFilmStripGeometry";
 import { GALLERY_CONFIG } from "@/constants/gallery";
 
 import SpiralTile from "./SpiralTile";
-import { useTexture } from "@react-three/drei";
 
 export default function SpiralScene() {
   useLenis();
@@ -68,17 +66,14 @@ export default function SpiralScene() {
           GALLERY_CONFIG.startRadius +
           (GALLERY_CONFIG.endRadius - GALLERY_CONFIG.startRadius) * progress;
 
-        const texture = `/images/${(i % GALLERY_CONFIG.totalImages) + 1}.jpg`;
-        // const aspect = texture.image.width / texture.image.height;
+        const imageSrc = `/images/${(i % GALLERY_CONFIG.totalImages) + 1}.jpg`;
 
         const arcWidth =
           (2 * Math.PI * radius) / GALLERY_CONFIG.tilesPerRevolution;
 
-        // const tileWidth = arcWidth * 0.82;
-        // const tileHeight = tileWidth / aspect;
         const tileHeight = arcWidth * GALLERY_CONFIG.tileHeightRatio;
         const tileAngle = arcWidth / radius + GALLERY_CONFIG.tileOverlap;
-        const centerY = (tileEdgesY[i] + tileEdgesY[i + 1]) / 2;
+        const positionY = (tileEdgesY[i] + tileEdgesY[i + 1]) / 2;
         const slope = tileEdgesY[i + 1] - tileEdgesY[i];
 
         return {
@@ -89,15 +84,16 @@ export default function SpiralScene() {
             slope,
             segments: GALLERY_CONFIG.tileSegments,
           }),
-          centerY,
+          index: i,
+          positionY,
           rotationY: i * angleStep,
-          texture: texture,
+          imageSrc,
         };
       },
     );
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (!spiralRef.current) return;
 
     scrollForce.current = THREE.MathUtils.lerp(
@@ -131,12 +127,7 @@ export default function SpiralScene() {
     <group ref={spiralRef}>
       {tiles.map((tile, index) => (
         <group key={index} rotation-y={tile.rotationY}>
-          <SpiralTile
-            geometry={tile.geometry}
-            texture={tile.texture}
-            index={index}
-            positionY={tile.centerY}
-          />
+          <SpiralTile {...tile} />
         </group>
       ))}
     </group>

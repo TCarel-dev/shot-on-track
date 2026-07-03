@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
+
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
+
 import gsap from "gsap";
 
 import vertexShader from "@/shaders/gallery.vert";
@@ -9,34 +11,32 @@ import fragmentShader from "@/shaders/gallery.frag";
 
 interface Props {
   geometry: THREE.BufferGeometry;
-  texture: string;
   index: number;
+  imageSrc: string;
   positionY: number;
-  aspect?: number;
+  rotationY: number;
 }
 
 export default function SpiralTile({
   geometry,
-  texture,
   index,
+  imageSrc,
   positionY,
-  aspect = 1,
 }: Props) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const hovered = useRef(false);
-
-  const map = useTexture(texture);
+  const texture = useTexture(imageSrc);
 
   const delay = index * 0.07;
 
   const uniforms = useMemo(
     () => ({
-      uMap: { value: map },
+      uMap: { value: texture },
       uHover: { value: 0 },
       uOpacity: { value: 0 },
     }),
-    [map, aspect],
+    [texture],
   );
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function SpiralTile({
       duration: 0.5,
       delay: delay,
     });
-  }, [index, positionY]);
+  }, [index, positionY, delay]);
 
   useFrame(() => {
     if (!materialRef.current || !meshRef.current) return;
@@ -101,9 +101,9 @@ export default function SpiralTile({
     >
       <shaderMaterial
         ref={materialRef}
+        uniforms={uniforms}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        uniforms={uniforms}
         transparent
         side={THREE.DoubleSide}
       />
