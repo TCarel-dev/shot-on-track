@@ -148,7 +148,8 @@ export default function SpiralTile({
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniforms}
-        transparent
+        // transparent
+        alphaTest={1}
         side={THREE.DoubleSide}
       />
     </mesh>
