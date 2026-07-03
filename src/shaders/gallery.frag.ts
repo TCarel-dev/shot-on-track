@@ -10,29 +10,22 @@ varying vec3 vViewDir;
 void main() {
     vec2 uv = vUv;
     vec4 tex = texture2D(uMap, uv);
+    vec3 color = tex.rgb;
 
     // -------------------------
-    // FILM BASE (black strip)
+    // FILM STRIP (black strip)
     // -------------------------
-    float topBottomBar = step(0.93, uv.y) + step(uv.y, 0.07);
+    float topBottomBar = step(0.90, uv.y) + step(uv.y, 0.10);
     vec3 filmBase = vec3(0.02);
+    color = mix(filmBase, color, 1.0 - topBottomBar);
 
     // -------------------------
     // IMAGE
     // -------------------------
-    vec3 color = tex.rgb;
-
     // darken edges (film border)
     float frameBorder =
         step(0.02, uv.x) * step(uv.x, 0.98);
-
     color *= frameBorder;
-
-    // -------------------------
-    // FILM STRIP
-    // -------------------------
-    color = mix(filmBase, color, 1.0 - topBottomBar);
-    // color = mix(color, perforationColor, holes);
 
     // -------------------------
     // LIGHTING
@@ -51,7 +44,7 @@ void main() {
     float rim = pow(1.0 - max(dot(N, V), 0.0), 2.5);
 
     // ---------------------------------------
-    // 3. COLOR SHADING
+    // COLOR SHADING
     // ---------------------------------------
     // lumière principale
     color *= mix(1.0, 1.0, diffuse);
@@ -61,7 +54,7 @@ void main() {
     color += rim * 0.12;
 
     // ---------------------------------------
-    // 4. HOVER
+    // HOVER
     // ---------------------------------------
     color = mix(color, color * 1.15, uHover);
 
