@@ -76,6 +76,8 @@ export default function SpiralScene() {
         const positionY = (tileEdgesY[i] + tileEdgesY[i + 1]) / 2;
         const slope = tileEdgesY[i + 1] - tileEdgesY[i];
 
+        const hasText = i % 6 === 0;
+
         return {
           geometry: createFilmStripGeometry({
             radius,
@@ -88,6 +90,7 @@ export default function SpiralScene() {
           positionY,
           rotationY: i * angleStep,
           imageSrc,
+          hasText,
         };
       },
     );

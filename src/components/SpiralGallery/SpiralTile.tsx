@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
-
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
-
 import gsap from "gsap";
 
 import vertexShader from "@/shaders/gallery.vert";
@@ -11,33 +9,79 @@ import fragmentShader from "@/shaders/gallery.frag";
 
 interface Props {
   geometry: THREE.BufferGeometry;
-  index: number;
   imageSrc: string;
+  index: number;
   positionY: number;
-  rotationY: number;
+  hasText: boolean;
 }
 
 export default function SpiralTile({
   geometry,
-  index,
   imageSrc,
+  index,
   positionY,
+  hasText,
 }: Props) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const hovered = useRef(false);
+
   const texture = useTexture(imageSrc);
+
+  const textTexture = useMemo(() => {
+    const width = 2048;
+    const height = 1024;
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+
+    if (ctx && hasText) {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "#ffe0bd";
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.75)";
+      ctx.lineWidth = 4;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "bold 60px sans-serif";
+      ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+      // ctx.shadowBlur = 16;
+      const text = "SHOT ON TRACK © 2026";
+      ctx.strokeText(text, width / 2, height * 0.05);
+      ctx.fillText(text, width / 2, height * 0.05);
+      ctx.strokeText(text, width / 2, height * 0.95);
+      ctx.fillText(text, width / 2, height * 0.95);
+    }
+
+    const canvasTexture = new THREE.CanvasTexture(canvas);
+    canvasTexture.minFilter = THREE.LinearFilter;
+    canvasTexture.magFilter = THREE.LinearFilter;
+    canvasTexture.flipY = true;
+    return canvasTexture;
+  }, [hasText]);
 
   const delay = index * 0.07;
 
   const uniforms = useMemo(
     () => ({
       uMap: { value: texture },
+      uTextMap: { value: textTexture },
+      uTextureAspect: { value: 1 },
       uHover: { value: 0 },
       uOpacity: { value: 0 },
+      uShowText: { value: hasText ? 1 : 0 },
+      uHoles: { value: hasText ? 0 : 1 },
     }),
-    [texture],
+    [texture, textTexture, hasText],
   );
+
+  useEffect(() => {
+    const image = texture?.image as { width: number; height: number } | null;
+    if (image?.width && image?.height && materialRef.current) {
+      materialRef.current.uniforms.uTextureAspect.value =
+        image.width / image.height;
+    }
+  }, [texture]);
 
   useEffect(() => {
     if (!meshRef.current || !materialRef.current) return;
@@ -68,7 +112,7 @@ export default function SpiralTile({
       duration: 0.5,
       delay: delay,
     });
-  }, [index, positionY, delay]);
+  }, [index, positionY]);
 
   useFrame(() => {
     if (!materialRef.current || !meshRef.current) return;
@@ -101,9 +145,9 @@ export default function SpiralTile({
     >
       <shaderMaterial
         ref={materialRef}
-        uniforms={uniforms}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
+        uniforms={uniforms}
         transparent
         side={THREE.DoubleSide}
       />

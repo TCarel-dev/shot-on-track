@@ -6,7 +6,6 @@ interface FilmStripOptions {
   tileHeight: number;
   slope: number;
   segments: number;
-  perforationCount?: number;
 }
 
 export function createFilmStripGeometry({
@@ -15,42 +14,17 @@ export function createFilmStripGeometry({
   tileHeight,
   slope,
   segments,
-  perforationCount = 10,
 }: FilmStripOptions) {
   const positions: number[] = [];
   const uvs: number[] = [];
   const indices: number[] = [];
 
-  const rows = 40;
+  const rows = 80;
   const cols = segments;
 
   const vertexIndex: number[][] = Array.from({ length: rows + 1 }, () =>
     new Array(cols + 1).fill(-1),
   );
-
-  const isHole = (u: number, v: number) => {
-    const step = 1 / perforationCount;
-    const holeRadius = step * 0.2;
-    const holeCenterY = 0.05;
-
-    const topDistance = v - holeCenterY;
-    const bottomDistance = v - (1 - holeCenterY);
-
-    const verticalDistance =
-      Math.abs(topDistance) < holeRadius
-        ? topDistance
-        : Math.abs(bottomDistance) < holeRadius
-          ? bottomDistance
-          : undefined;
-
-    if (verticalDistance === undefined) return false;
-
-    const localU = (u % step) - step / 2;
-    return (
-      localU * localU + verticalDistance * verticalDistance <
-      holeRadius * holeRadius
-    );
-  };
 
   // -----------------------------
   // vertices
@@ -61,12 +35,7 @@ export function createFilmStripGeometry({
     for (let x = 0; x <= cols; x++) {
       const u = x / cols;
 
-      if (isHole(u, v)) {
-        continue;
-      }
-
       const angle = (u - 0.5) * tileAngle;
-
       const yPos = (v - 0.5) * tileHeight + (u - 0.5) * slope;
 
       vertexIndex[y][x] = positions.length / 3;
