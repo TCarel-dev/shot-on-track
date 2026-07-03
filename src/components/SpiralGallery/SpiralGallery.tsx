@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import clsx from "clsx";
 import { Canvas } from "@react-three/fiber";
 import { GALLERY_CONFIG } from "@/constants/gallery";
 import { useLenis } from "@/hooks/useLenis";
