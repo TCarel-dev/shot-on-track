@@ -114,15 +114,13 @@ void applyFilmHoles(vec2 uv, float barMask)
             uv.x + spacing * .5,
             spacing
         ) - spacing * .5;
+    float centerX = uv.x - localX;
 
-    float d =
-        length(
-            vec2(
-                localX,
-                uv.y - centerY
-            )
-        );
+    // skip holes whose center would fall outside the tile bounds
+    if(centerX < radius || centerX > 1.0 - radius)
+        return;
 
+    float d = length(vec2(localX, uv.y - centerY));
     if(d < radius)
         discard;
 }
@@ -193,9 +191,11 @@ void main()
 
     // -------------------------------------------------
     // Frame separation
+    // Use mix so the border color matches the film bands
     // -------------------------------------------------
 
-    color *= getFrameBorderMask(uv);
+    float frameMask = getFrameBorderMask(uv);
+    color = mix(filmColor, color, frameMask);
 
     // -------------------------------------------------
     // Printed text
