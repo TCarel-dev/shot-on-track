@@ -38,14 +38,18 @@ export default function SpiralTile({
 
     if (ctx && hasText) {
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "#ffe0bd";
+      const cssColor =
+        (typeof window !== "undefined" &&
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--color-primary",
+          )) || "#ffe0bd";
+      ctx.fillStyle = cssColor.trim() || "#ffe0bd";
       ctx.strokeStyle = "rgba(0, 0, 0, 0.75)";
       ctx.lineWidth = 4;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.font = "bold 60px sans-serif";
       ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-      // ctx.shadowBlur = 16;
       const text = "SHOT ON TRACK © 2026";
       ctx.strokeText(text, width / 2, height * 0.05);
       ctx.fillText(text, width / 2, height * 0.05);
