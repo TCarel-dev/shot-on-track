@@ -42,7 +42,8 @@ export default function SpiralTile({
         (typeof window !== "undefined" &&
           getComputedStyle(document.documentElement).getPropertyValue(
             "--color-primary",
-          )) || "#ffe0bd";
+          )) ||
+        "#ffe0bd";
       ctx.fillStyle = cssColor.trim() || "#ffe0bd";
       ctx.strokeStyle = "rgba(0, 0, 0, 0.75)";
       ctx.lineWidth = 4;
@@ -116,7 +117,7 @@ export default function SpiralTile({
       duration: 0.5,
       delay: delay,
     });
-  }, [index, positionY]);
+  }, [delay, index, positionY]);
 
   useFrame(() => {
     if (!materialRef.current || !meshRef.current) return;

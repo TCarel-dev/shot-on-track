@@ -5,6 +5,7 @@ import { GALLERY_CONFIG } from "@/constants/gallery";
 import { useLenis } from "@/hooks/useLenis";
 
 import SpiralScene from "./SpiralScene";
+
 import styles from "./styles.module.scss";
 
 export default function SpiralGallery() {

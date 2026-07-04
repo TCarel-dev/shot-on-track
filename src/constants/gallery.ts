@@ -11,4 +11,5 @@ export const GALLERY_CONFIG = {
   cameraPos: { x: 0, y: 4, z: 12 },
   cameraFov: 90,
   baseRotationSpeed: 0.0001,
+  hasTextDecade: 7,
 };

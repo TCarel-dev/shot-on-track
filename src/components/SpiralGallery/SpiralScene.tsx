@@ -66,8 +66,6 @@ export default function SpiralScene() {
           GALLERY_CONFIG.startRadius +
           (GALLERY_CONFIG.endRadius - GALLERY_CONFIG.startRadius) * progress;
 
-        const imageSrc = `/images/${(i % GALLERY_CONFIG.totalImages) + 1}.jpg`;
-
         const arcWidth =
           (2 * Math.PI * radius) / GALLERY_CONFIG.tilesPerRevolution;
 
@@ -76,7 +74,8 @@ export default function SpiralScene() {
         const positionY = (tileEdgesY[i] + tileEdgesY[i + 1]) / 2;
         const slope = tileEdgesY[i + 1] - tileEdgesY[i];
 
-        const hasText = i % 6 === 0;
+        const imageSrc = `/images/${(i % GALLERY_CONFIG.totalImages) + 1}.jpg`;
+        const hasText = i % GALLERY_CONFIG.hasTextDecade === 0;
 
         return {
           geometry: createFilmStripGeometry({
